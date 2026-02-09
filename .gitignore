@@ -38,6 +38,13 @@ Thumbs.db
 # Claude Code
 .claude/
 CLAUDE.md
+AGENTS.md
+
+# Internal/operational scripts (contain infrastructure details)
+scripts/monitor_training.sh
+scripts/test_edge_cases.py
+scripts/test_gsd_sensitivity.py
+scripts/test_tiling_boundaries.py
 
 # Internal project management (not for public repo)
 openspec/
