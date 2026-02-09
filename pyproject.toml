@@ -12,6 +12,18 @@ requires-python = ">=3.10"
 authors = [
     { name = "Gabriel Price" },
 ]
+keywords = [
+    "geospatial",
+    "object-detection",
+    "satellite",
+    "remote-sensing",
+    "gis",
+    "detr",
+    "rf-detr",
+    "geotiff",
+    "tiling",
+    "overhead-imagery",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
