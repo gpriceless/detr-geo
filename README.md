@@ -3,10 +3,16 @@
 [![CI](https://github.com/gpriceless/detr-geo/actions/workflows/ci.yml/badge.svg)](https://github.com/gpriceless/detr-geo/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gpriceless/detr-geo/blob/main/notebooks/quickstart.ipynb)
+
+<!-- Hero image: see product/hero-image-spec.md for design spec -->
+![detr-geo detection results](assets/hero-detection.png)
 
 **Object detection for satellite and aerial imagery.** Feed in a GeoTIFF, get back georeferenced vector data -- GeoJSON, GeoPackage, or Shapefile -- with full CRS, coordinates, and attribute tables ready for QGIS, ArcGIS, or PostGIS.
 
 detr-geo wraps [RF-DETR](https://github.com/roboflow/rf-detr) and adds everything a geospatial workflow needs: automatic tiling with cross-tile NMS deduplication, multispectral band mapping, 16-bit imagery normalization, nodata handling, and spatial-aware training dataset preparation. Includes a training pipeline for fine-tuning on your own data, with xView-trained vehicle detection weights available as an example.
+
+## Quick Start
 
 ```python
 from detr_geo import DetrGeo

@@ -26,7 +26,7 @@ pip install detr-geo[cloud,rfdetr]
 ```python
 from detr_geo import DetrGeo
 
-dg = DetrGeo(model="nano")
+dg = DetrGeo(model_size="nano")
 dg.set_image("https://example.com/aerial_imagery.tif")
 detections = dg.detect_tiled(tile_size=512, overlap=0.2)
 ```
@@ -35,7 +35,7 @@ detections = dg.detect_tiled(tile_size=512, overlap=0.2)
 
 ```python
 # Requires AWS credentials in environment or ~/.aws/credentials
-dg = DetrGeo(model="nano")
+dg = DetrGeo(model_size="nano")
 dg.set_image("s3://my-bucket/imagery/aerial_2024.tif")
 detections = dg.detect_tiled()
 ```
@@ -50,7 +50,7 @@ from detr_geo import DetrGeo
 item = pystac.Item.from_file("https://example.com/stac/items/my-item.json")
 
 # Pass directly to detr_geo
-dg = DetrGeo(model="nano")
+dg = DetrGeo(model_size="nano")
 dg.set_image(item)  # Automatically extracts the COG URL
 detections = dg.detect_tiled()
 ```

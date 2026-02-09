@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Core geospatial detection pipeline: GeoTIFF input, georeferenced output
-- RF-DETR model adapter with five model sizes (nano, small, medium, large, xlarge)
+- RF-DETR model adapter with five model sizes (nano, small, medium, base, large)
 - `DetrGeo` class with `set_image()`, `detect()`, and `detect_tiled()` methods
 - Tiled inference engine with configurable tile size and overlap
 - Cross-tile NMS (two-stage: per-tile class-agnostic + cross-tile class-aware)
