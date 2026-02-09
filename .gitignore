@@ -44,6 +44,11 @@ AGENTS.md
 # Internal/operational scripts (kept locally, not for public repo)
 scripts/
 
+# Tests for internal scripts (depend on scripts/ which aren't in repo)
+tests/test_vme_download.py
+tests/test_vme_training.py
+tests/test_vme_validation.py
+
 # Internal project management (not for public repo)
 openspec/
 .openspec/
