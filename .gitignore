@@ -49,6 +49,9 @@ tests/test_vme_download.py
 tests/test_vme_training.py
 tests/test_vme_validation.py
 
+# VME fine-tuning docs (VME dataset not used in final training)
+docs/fine-tuning-vme.md
+
 # Internal project management (not for public repo)
 openspec/
 .openspec/

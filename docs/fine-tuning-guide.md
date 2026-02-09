@@ -293,8 +293,6 @@ Training details:
 - Training time: ~4 hours
 - Best mAP: ~0.45
 
-See the [VME Fine-Tuning Guide](fine-tuning-vme.md) for a smaller-scale reproduction guide using the VME (Vehicles in the Middle East) dataset.
-
 ---
 
 ## Active Learning Loop
