@@ -15,9 +15,10 @@ build/
 venv/
 env/
 
-# IDE
+# IDE and editor config
 .vscode/
 .idea/
+.claude/
 *.swp
 *.swo
 
@@ -27,7 +28,7 @@ env/
 htmlcov/
 .mypy_cache/
 
-# Environment
+# Environment and secrets
 .env
 .env.local
 *.credentials
@@ -36,41 +37,15 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Claude Code
-.claude/
-CLAUDE.md
-AGENTS.md
-
-# Internal/operational scripts (kept locally, not for public repo)
+# Local development
 scripts/
-
-# Tests for internal scripts (depend on scripts/ which aren't in repo)
-tests/test_vme_download.py
-tests/test_vme_training.py
-tests/test_vme_validation.py
-
-# VME fine-tuning docs (VME dataset not used in final training)
-docs/fine-tuning-vme.md
-CLOUD_SUPPORT.md
-
-# Internal project management (not for public repo)
-openspec/
-.openspec/
 research/
 product/
-docs/plane-setup.md
-docs/openspec-plane-alignment-audit.md
-docs/engineering-memory.md
-docs/xview-training-progress.md
-docs/xview-training-live.md
-docs/engineering-protocol.md
-docs/mvp-finalization-plan.md
-docs/mvp-spawn-requests.md
-docs/post-mortem.md
-docs/qa-gate-bug-fix-wave.md
-docs/qa-gate-report.md
-docs/real-world-testing-plan.md
-docs/requirements-review-008-009.md
+openspec/
+.openspec/
+AGENTS.md
+CLOUD_SUPPORT.md
+tests/test_vme_*.py
 
 # Training data and model weights
 data/
@@ -82,8 +57,7 @@ wandb/
 vme_dataset/
 evaluation_results/
 
-# Training/pipeline output
+# Build output
 output/
 vme_pipeline_output/
-scripts/output/
 *.log
