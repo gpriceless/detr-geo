@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# Environment
+.env
+.env.local
+*.credentials
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
+CLAUDE.md
+
+# Internal project management (not for public repo)
+openspec/
+.openspec/
+research/
+product/
+docs/plane-setup.md
+docs/openspec-plane-alignment-audit.md
+docs/engineering-memory.md
+docs/xview-training-progress.md
+docs/xview-training-live.md
+docs/engineering-protocol.md
+docs/mvp-finalization-plan.md
+docs/mvp-spawn-requests.md
+docs/post-mortem.md
+docs/qa-gate-bug-fix-wave.md
+docs/qa-gate-report.md
+docs/real-world-testing-plan.md
+docs/requirements-review-008-009.md
+
+# Training data and model weights
+data/
+*.pth
+*.pt
+checkpoints/
+training_output/
+wandb/
+vme_dataset/
+evaluation_results/
+
+# Training/pipeline output
+output/
+vme_pipeline_output/
+scripts/output/
+*.log
