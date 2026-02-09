@@ -40,11 +40,8 @@ Thumbs.db
 CLAUDE.md
 AGENTS.md
 
-# Internal/operational scripts (contain infrastructure details)
-scripts/monitor_training.sh
-scripts/test_edge_cases.py
-scripts/test_gsd_sensitivity.py
-scripts/test_tiling_boundaries.py
+# Internal/operational scripts (kept locally, not for public repo)
+scripts/
 
 # Internal project management (not for public repo)
 openspec/
