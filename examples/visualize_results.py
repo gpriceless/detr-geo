@@ -1,8 +1,9 @@
-"""Visualize detections: static matplotlib plots and GeoJSON/GeoPackage export.
+"""Visualize detections: static plots, interactive maps, and vector export.
 
-Shows how to overlay bounding boxes on source imagery using show_detections(),
-display results on an interactive web map with show_map(), and export to
-standard geospatial vector formats.
+Shows three ways to view and share detection results:
+  1. Static matplotlib plot with bounding boxes on the source image
+  2. Interactive leafmap for exploring detections on a satellite basemap
+  3. Vector export to GeoJSON and GeoPackage for GIS tools
 
 Prerequisites:
     pip install detr-geo[all]
@@ -23,9 +24,8 @@ def main(image_path: str) -> None:
     dg = DetrGeo(model_size="medium", confidence_threshold=0.4)
     dg.set_image(image_path, suppress_gsd_warning=True)
 
-    # detect() loads the full image into memory, which is needed for
-    # show_detections(). For large rasters, use detect_tiled() instead
-    # and skip show_detections() (it requires the in-memory image).
+    # detect() loads the full image into memory -- needed for show_detections().
+    # For large rasters, use detect_tiled() and skip the matplotlib plot.
     detections = dg.detect()
     print(f"Detected {len(detections)} objects")
 
@@ -35,9 +35,9 @@ def main(image_path: str) -> None:
 
     output_stem = Path(image_path).stem
 
-    # --- Static matplotlib visualization ---
-    # Draws bounding boxes on the source image with class labels.
-    # Requires detect() (not detect_tiled) because it needs the full image.
+    # --- 1. Static matplotlib plot ---
+    # Draws bounding boxes on the source image with class labels and confidence.
+    # Requires detect() (not detect_tiled) because it uses the in-memory image.
     fig, ax = dg.show_detections(
         figsize=(15, 12),
         min_confidence=0.5,
@@ -47,29 +47,25 @@ def main(image_path: str) -> None:
     )
     print(f"Saved static plot to {output_stem}_detections.png")
 
-    # --- Export to GeoJSON ---
-    # GeoJSON auto-reprojects to WGS84 (EPSG:4326) per the spec.
-    # Coordinates become longitude/latitude regardless of the input CRS.
+    # --- 2. Export to GeoJSON (WGS84) and GeoPackage (original CRS) ---
     dg.to_geojson(f"{output_stem}_detections.geojson")
     print(f"Exported GeoJSON (WGS84) to {output_stem}_detections.geojson")
 
-    # --- Export to GeoPackage ---
-    # GeoPackage preserves the original CRS from the raster.
-    # Recommended for GIS workflows (QGIS, ArcGIS, PostGIS import).
     dg.to_gpkg(f"{output_stem}_detections.gpkg", layer="detections")
     print(f"Exported GeoPackage to {output_stem}_detections.gpkg")
 
-    # --- Working with the GeoDataFrame directly ---
+    # --- 3. Work with the GeoDataFrame directly ---
     gdf = dg.detections
     high_conf = gdf[gdf["confidence"] > 0.7]
     print(f"\n{len(high_conf)} detections above 0.7 confidence:")
-    print(high_conf[["class_name", "confidence"]].to_string(index=False))
+    if len(high_conf) > 0:
+        print(high_conf[["class_name", "confidence"]].to_string(index=False))
 
-    # --- Interactive web map (Jupyter / browser) ---
-    # Uncomment the lines below in a Jupyter notebook:
+    # --- 4. Interactive web map (Jupyter / browser) ---
+    # Uncomment in a Jupyter notebook:
     #
     # m = dg.show_map(basemap="SATELLITE", min_confidence=0.5)
-    # m  # displays the interactive map in Jupyter
+    # m  # displays the interactive map
 
 
 if __name__ == "__main__":

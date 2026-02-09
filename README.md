@@ -4,29 +4,54 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**Run object detection on geospatial imagery and get georeferenced vector results.** detr-geo wraps the [RF-DETR](https://github.com/roboflow/rf-detr) object detection model with a geospatial pipeline: it reads GeoTIFFs, handles tiling for large rasters, performs detection, and exports results as GeoJSON, GeoPackage, or Shapefile with proper CRS and coordinates.
+**Object detection for satellite and aerial imagery.** Feed in a GeoTIFF, get back georeferenced vector data -- GeoJSON, GeoPackage, or Shapefile -- with full CRS, coordinates, and attribute tables ready for QGIS, ArcGIS, or PostGIS.
 
-Includes xView fine-tuned weights for overhead vehicle detection -- distinguishing Car, Pickup, Truck, Bus, and Other vehicles from satellite imagery at 0.3 m GSD.
-
-Inspired by [samgeo](https://github.com/opengeos/segment-geospatial), but for bounding-box detection rather than segmentation.
-
-<!-- Comparison images: COCO baseline vs xView fine-tuned on the same parking lot
-     See scripts/output/ for generated comparison images. -->
-
-## Quick Start
+detr-geo wraps [RF-DETR](https://github.com/roboflow/rf-detr) and adds everything a geospatial workflow needs: automatic tiling with cross-tile NMS deduplication, multispectral band mapping, 16-bit imagery normalization, nodata handling, and spatial-aware training dataset preparation. Ships with xView fine-tuned weights that detect vehicles from orbit.
 
 ```python
 from detr_geo import DetrGeo
 
 dg = DetrGeo(model_size="medium")
-dg.set_image("path/to/geotiff.tif")
-detections = dg.detect()
-dg.to_geojson("detections.geojson")
+dg.set_image("parking_lot.tif")
+detections = dg.detect_tiled(overlap=0.2, threshold=0.3)
+dg.to_gpkg("vehicles.gpkg")
+
+print(f"{len(detections)} vehicles found")
+print(detections[["class_name", "confidence", "geometry"]].head())
 ```
 
-## Using the xView Fine-Tuned Model
+Inspired by [samgeo](https://github.com/opengeos/segment-geospatial), but for bounding-box detection rather than segmentation.
 
-The COCO-pretrained model was trained on ground-level photos and struggles with overhead imagery. The xView fine-tuned model detects vehicles from satellite and aerial perspectives:
+---
+
+## What detr-geo does that raw RF-DETR cannot
+
+| Capability | RF-DETR alone | detr-geo |
+|---|---|---|
+| **Input** | Single PIL image, <= 704px | GeoTIFF of any size, any CRS, 8/16-bit |
+| **Output** | Pixel bounding boxes | Georeferenced polygons with CRS |
+| **Large imagery** | Fails or requires manual slicing | Automatic tiling, overlap, cross-tile NMS |
+| **Multispectral** | RGB only | Band presets for NAIP, Sentinel-2, WorldView |
+| **Nodata** | Not handled | Skip empty tiles, fill partial tiles |
+| **Export** | NumPy arrays | GeoJSON, GeoPackage, Shapefile |
+| **Training** | Generic COCO format | Spatial splitting to prevent geospatial data leakage |
+| **Overhead imagery** | Trained on ground-level photos | xView fine-tuned weights for satellite vehicle detection |
+
+---
+
+## xView Fine-Tuned Model
+
+The COCO-pretrained model was trained on ground-level photography. It has never seen a car from above, and it shows -- overhead vehicles get labeled as "motorcycle", "skateboard", or "boat".
+
+The xView fine-tuned model fixes this. Trained on the [xView dataset](http://xviewdataset.org/) (satellite imagery at 0.3m GSD), it detects 5 overhead vehicle classes:
+
+| Class | Examples |
+|---|---|
+| Car | Sedans, SUVs, hatchbacks |
+| Pickup Truck | Pickup trucks, utility pickups |
+| Truck | Semi trucks, cargo trucks, tankers |
+| Bus | Transit buses, school buses, coaches |
+| Other Vehicle | Construction equipment, engineering vehicles |
 
 ```python
 from detr_geo import DetrGeo
@@ -36,21 +61,28 @@ dg = DetrGeo(
     pretrain_weights="checkpoints/checkpoint_best_ema.pth",
     custom_class_names={
         0: "Car",
-        1: "Pickup",
+        1: "Pickup Truck",
         2: "Truck",
         3: "Bus",
-        4: "Other",
+        4: "Other Vehicle",
     },
 )
 
-dg.set_image("satellite_image.tif")
+dg.set_image("satellite_scene.tif")
 detections = dg.detect_tiled(overlap=0.2, threshold=0.3)
+
+# Per-class counts
+print(detections["class_name"].value_counts())
+
+# Export for QGIS
 dg.to_gpkg("vehicle_detections.gpkg")
 ```
 
 <!-- Download xView fine-tuned weights:
      huggingface-cli download gpriceless/detr-geo-xview \
-         checkpoint_best_ema.pth - -local-dir checkpoints/ -->
+         checkpoint_best_ema.pth --local-dir checkpoints/ -->
+
+---
 
 ## Installation
 
@@ -78,15 +110,15 @@ pip install detr-geo[viz]     # With leafmap + matplotlib visualization
 pip install detr-geo[all]     # Everything
 ```
 
-**Core** installs rasterio, geopandas, pyproj, shapely, and numpy. This is sufficient if you want to process pre-computed detection results without running inference.
+**Core** installs rasterio, geopandas, pyproj, shapely, and numpy. This is sufficient for processing pre-computed detection results without running inference.
 
-**[rfdetr]** adds the RF-DETR model, PyTorch, and supervision. Requires ~2 GB disk space for model weights on first use.
+**[rfdetr]** adds the RF-DETR model, PyTorch, and supervision. Downloads ~2 GB of model weights on first use.
 
 **[viz]** adds leafmap (interactive maps) and matplotlib (static plots).
 
 ### GPU Support
 
-RF-DETR runs on CPU but is significantly faster on GPU:
+RF-DETR runs on CPU but is 10-50x faster on GPU:
 
 ```bash
 # CUDA (NVIDIA)
@@ -97,53 +129,96 @@ pip install detr-geo[all]
 pip install detr-geo[all]
 ```
 
-## Features
+---
 
-- **Tiled detection** with configurable overlap and cross-tile NMS for rasters of any size
-- **Fine-tuning pipeline** -- prepare datasets, train, and run inference with custom weights
-- **Band presets** for NAIP, Sentinel-2, WorldView, and custom multispectral sensors
-- **16-bit imagery** support with percentile stretching
-- **Nodata handling** -- skip empty tiles, fill partial tiles
-- **Export** to GeoJSON (auto-reproject to WGS84), GeoPackage, and Shapefile
-- **Visualization** via interactive leafmap and static matplotlib
-- **CRS-aware** -- reads and preserves coordinate reference systems end-to-end
-- **Spatial dataset splitting** to prevent data leakage during training
+## Core Workflow
 
-## Tiled Detection
-
-Large rasters are split into overlapping tiles, each processed independently, then merged with class-aware NMS:
+### 1. Load imagery
 
 ```python
 dg = DetrGeo(model_size="medium")
-dg.set_image("large_orthomosaic.tif")
-
-detections = dg.detect_tiled(
-    overlap=0.2,           # 20% tile overlap
-    nms_threshold=0.5,     # IoU threshold for deduplication
-    nodata_threshold=0.5,  # Skip tiles that are >50% nodata
-)
-
-dg.to_gpkg("detections.gpkg")
+dg.set_image("orthomosaic.tif")
 ```
 
-## Fine-Tuning
+detr-geo reads the CRS and affine transform from your raster automatically. It supports GeoTIFF, COG, and any rasterio-readable format.
 
-Prepare a custom dataset and fine-tune RF-DETR on your own geospatial data:
+### 2. Detect objects
+
+For small images (fits in memory):
 
 ```python
-from detr_geo import prepare_training_dataset, SpatialSplitter, train, DetrGeo
+detections = dg.detect(threshold=0.4)
+```
 
-# Prepare COCO-format dataset from GeoTIFF + GeoJSON
+For large rasters (orthomosaics, satellite scenes):
+
+```python
+detections = dg.detect_tiled(
+    overlap=0.2,           # 20% overlap prevents boundary artifacts
+    nms_threshold=0.5,     # deduplicate across tiles
+    nodata_threshold=0.5,  # skip tiles that are >50% empty
+)
+```
+
+### 3. Export georeferenced results
+
+```python
+dg.to_gpkg("detections.gpkg")         # GeoPackage -- recommended
+dg.to_geojson("detections.geojson")   # GeoJSON (auto-reprojects to WGS84)
+dg.to_shp("detections.shp")           # Shapefile (legacy)
+```
+
+Or work with the GeoDataFrame directly:
+
+```python
+gdf = dg.detections
+cars = gdf[gdf["class_name"] == "Car"]
+confident = gdf[gdf["confidence"] > 0.7]
+```
+
+### 4. Visualize
+
+```python
+# Static matplotlib plot
+dg.show_detections(figsize=(15, 12), save_path="output.png")
+
+# Interactive leafmap (Jupyter)
+m = dg.show_map(basemap="SATELLITE")
+```
+
+---
+
+## Band Selection
+
+RF-DETR expects 3-channel RGB input. Different sensors store RGB in different bands. detr-geo maps them automatically:
+
+```python
+dg.set_image("naip.tif", bands="rgb")               # Default: bands 1-2-3
+dg.set_image("sentinel2.tif", bands="sentinel2_rgb") # Sentinel-2: bands 4-3-2
+dg.set_image("worldview.tif", bands="worldview_rgb") # WorldView: bands 5-3-2
+dg.set_image("custom.tif", bands=(4, 3, 2))          # Any 3-band combo (1-indexed)
+```
+
+---
+
+## Fine-Tuning on Custom Data
+
+Train RF-DETR on your own overhead imagery. detr-geo handles the full pipeline from GeoTIFF + vector annotations to trained model:
+
+```python
+from detr_geo import prepare_training_dataset, train, DetrGeo
+
+# 1. Tile raster, align CRS, clip annotations, split spatially
 prepare_training_dataset(
     raster_path="ortho.tif",
     annotations_path="labels.geojson",
     output_dir="training_data/",
     tile_size=576,
-    split_method="block",
+    split_method="block",       # spatial splitting prevents leakage
     split_ratios=(0.8, 0.15, 0.05),
 )
 
-# Fine-tune (requires GPU)
+# 2. Train with geospatial augmentations (rotation, flip -- no "up" in overhead)
 dg = DetrGeo(model_size="medium")
 train(
     adapter=dg._adapter,
@@ -152,19 +227,53 @@ train(
     batch_size=8,
     augmentation_preset="satellite_default",
 )
+
+# 3. Run inference with your trained weights
+dg = DetrGeo(
+    model_size="medium",
+    pretrain_weights="output/checkpoint_best_ema.pth",
+    custom_class_names={0: "Building", 1: "Road", 2: "Tree"},
+)
 ```
 
-See the [Fine-Tuning Guide](docs/fine-tuning-guide.md) for a complete walkthrough including hardware requirements, monitoring, and troubleshooting.
+See the [Fine-Tuning Guide](docs/fine-tuning-guide.md) for hardware requirements, monitoring, xView training details, and troubleshooting.
+
+---
 
 ## Model Sizes
 
 | Size | Resolution | Parameters | Best For |
 |------|-----------|------------|----------|
-| nano | 384px | ~15M | CPU inference, quick tests |
-| small | 512px | ~22M | Balanced speed/accuracy |
-| medium | 576px | ~25M | Default. Good accuracy |
-| base | 560px | ~29M | Higher accuracy |
+| nano | 384px | ~15M | CPU inference, quick prototyping |
+| small | 512px | ~22M | Balanced speed and accuracy |
+| **medium** | **576px** | **~25M** | **Default. Best accuracy/speed tradeoff** |
+| base | 560px | ~29M | Higher accuracy, more VRAM |
 | large | 704px | ~30M | Maximum accuracy, GPU recommended |
+
+---
+
+## Real-World Use Cases
+
+**Parking lot occupancy** -- Count vehicles across a commercial property from a single satellite capture. Export per-class counts (cars, trucks, buses) as a GeoJSON layer for the facilities team.
+
+**Construction site monitoring** -- Detect heavy equipment in weekly drone surveys. Compare detections across dates to track mobilization and demobilization.
+
+**Fleet asset tracking** -- Process satellite imagery of a logistics yard to locate trucks and trailers. Output GeoPackage layers with confidence scores for the dispatch team.
+
+**Urban planning** -- Tile a city-wide orthomosaic and detect all vehicles. Aggregate detections by census tract for traffic density analysis.
+
+**Disaster response** -- Rapidly scan post-event imagery for vehicles (potential rescue targets) in flood zones or collapsed structures.
+
+---
+
+## Known Limitations
+
+- **Memory**: `detect()` loads the full raster. Use `detect_tiled()` for rasters larger than ~5000x5000 pixels.
+- **Geographic CRS tiling**: Tiles in EPSG:4326 vary in ground size by latitude. Use a projected CRS for best results.
+- **Per-tile normalization**: In tiled mode, each tile is normalized independently. For consistent 16-bit results, pre-compute stretch parameters with `detr_geo.io.compute_scene_stretch_params`.
+- **Batch inference**: Tiles are processed sequentially on GPU. True tensor batching is planned.
+
+---
 
 ## Output Formats
 
@@ -173,56 +282,30 @@ See the [Fine-Tuning Guide](docs/fine-tuning-guide.md) for a complete walkthroug
 | GeoJSON | `to_geojson()` | Auto-reprojects to WGS84 per spec |
 | GeoPackage | `to_gpkg()` | Recommended. Preserves CRS, supports layers |
 | Shapefile | `to_shp()` | Legacy. 10-char field names, 2 GB limit |
-| GeoDataFrame | `.detections` | In-memory geopandas object for further analysis |
+| GeoDataFrame | `.detections` | In-memory geopandas for further analysis |
 
-## Band Selection
-
-detr-geo maps sensor bands to RGB for the model:
-
-```python
-dg.set_image("naip.tif", bands="rgb")              # Default: bands 1-2-3
-dg.set_image("sentinel2.tif", bands="sentinel2_rgb") # Sentinel-2: bands 4-3-2
-dg.set_image("worldview.tif", bands="worldview_rgb") # WorldView: bands 5-3-2
-dg.set_image("multispectral.tif", bands=(4, 3, 2))   # Custom (1-indexed)
-```
-
-## Visualization
-
-```python
-# Interactive leafmap (Jupyter/browser)
-dg.show_map(basemap="SATELLITE")
-
-# Static matplotlib plot (saved to file)
-dg.show_detections(figsize=(15, 12))
-```
-
-## Known Limitations
-
-- **Memory**: `detect()` loads the full raster into memory. Use `detect_tiled()` for rasters larger than ~5000x5000 pixels.
-- **Cloud-native**: No direct COG/HTTP or STAC support yet. Download rasters locally first.
-- **Geographic CRS tiling**: Tiling in geographic CRS (EPSG:4326) produces tiles of varying ground size at different latitudes. Use projected CRS for best results.
-- **Batch inference**: Tiles are processed sequentially on GPU. True tensor batching is planned.
-- **Per-tile normalization**: In tiled mode, each tile is normalized independently. For consistent results on 16-bit imagery, pre-compute scene stretch parameters using `detr_geo.io.compute_scene_stretch_params`.
+---
 
 ## License
 
 **Code**: MIT
 
-**xView fine-tuned weights**: CC BY-NC-SA 4.0 (following the xView dataset license). The weights are derived from the xView dataset and inherit its non-commercial license. COCO-pretrained weights are unrestricted.
+**xView fine-tuned weights**: CC BY-NC-SA 4.0 (following the xView dataset license). COCO-pretrained weights are unrestricted.
+
+---
 
 ## Links
 
-- [RF-DETR](https://github.com/roboflow/rf-detr) -- the underlying detection model
-- [samgeo](https://github.com/opengeos/segment-geospatial) -- the inspiration for this project
-- [xView Dataset](http://xviewdataset.org/) -- satellite imagery dataset used for fine-tuning
-- [Geospatial Guide](docs/geospatial-guide.md) -- detailed guide for geospatial analysts
-- [API Reference](docs/api-reference.md) -- full API documentation
-- [Fine-Tuning Guide](docs/fine-tuning-guide.md) -- train on custom overhead imagery
-- [VME Fine-Tuning](docs/fine-tuning-vme.md) -- reproduce the VME training run
-- [Examples](examples/) -- runnable example scripts
+- [API Reference](docs/api-reference.md) -- full method documentation
+- [Geospatial Guide](docs/geospatial-guide.md) -- tiling, CRS, bands, 16-bit, nodata
+- [Fine-Tuning Guide](docs/fine-tuning-guide.md) -- train on your own overhead imagery
+- [Examples](examples/) -- runnable scripts for common workflows
+- [RF-DETR](https://github.com/roboflow/rf-detr) -- the underlying detection architecture
+- [xView Dataset](http://xviewdataset.org/) -- satellite imagery used for fine-tuning
+- [samgeo](https://github.com/opengeos/segment-geospatial) -- the project that inspired this one
 
 ## Acknowledgments
 
-- [RF-DETR](https://github.com/roboflow/rf-detr) by Roboflow -- the transformer-based detection architecture
-- [xView](http://xviewdataset.org/) by DIUx -- satellite imagery and annotations for fine-tuning
-- [samgeo](https://github.com/opengeos/segment-geospatial) by Qiusheng Wu -- the geospatial ML workflow that inspired this project
+- [RF-DETR](https://github.com/roboflow/rf-detr) by Roboflow -- transformer-based object detection
+- [xView](http://xviewdataset.org/) by DIUx -- satellite annotations for fine-tuning
+- [samgeo](https://github.com/opengeos/segment-geospatial) by Qiusheng Wu -- the geospatial ML workflow model

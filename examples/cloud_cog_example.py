@@ -9,9 +9,7 @@ Requirements:
     pip install detr-geo[cloud,rfdetr]
 """
 
-from pathlib import Path
-
-from detr_geo import DetrGeo, resolve_raster_source
+from detr_geo import resolve_raster_source
 
 # Example 1: Load a COG from HTTP URL
 # ------------------------------------
