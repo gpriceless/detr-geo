@@ -6,7 +6,7 @@
 
 **Object detection for satellite and aerial imagery.** Feed in a GeoTIFF, get back georeferenced vector data -- GeoJSON, GeoPackage, or Shapefile -- with full CRS, coordinates, and attribute tables ready for QGIS, ArcGIS, or PostGIS.
 
-detr-geo wraps [RF-DETR](https://github.com/roboflow/rf-detr) and adds everything a geospatial workflow needs: automatic tiling with cross-tile NMS deduplication, multispectral band mapping, 16-bit imagery normalization, nodata handling, and spatial-aware training dataset preparation. Ships with xView fine-tuned weights that detect vehicles from orbit.
+detr-geo wraps [RF-DETR](https://github.com/roboflow/rf-detr) and adds everything a geospatial workflow needs: automatic tiling with cross-tile NMS deduplication, multispectral band mapping, 16-bit imagery normalization, nodata handling, and spatial-aware training dataset preparation. Includes a training pipeline for fine-tuning on your own data, with xView-trained vehicle detection weights available as an example.
 
 ```python
 from detr_geo import DetrGeo
@@ -35,7 +35,7 @@ Inspired by [samgeo](https://github.com/opengeos/segment-geospatial), but for bo
 | **Nodata** | Not handled | Skip empty tiles, fill partial tiles |
 | **Export** | NumPy arrays | GeoJSON, GeoPackage, Shapefile |
 | **Training** | Generic COCO format | Spatial splitting to prevent geospatial data leakage |
-| **Overhead imagery** | Trained on ground-level photos | xView fine-tuned weights for satellite vehicle detection |
+| **Overhead imagery** | Trained on ground-level photos | Fine-tuning pipeline + example xView vehicle weights |
 
 ---
 
@@ -78,9 +78,12 @@ print(detections["class_name"].value_counts())
 dg.to_gpkg("vehicle_detections.gpkg")
 ```
 
-<!-- Download xView fine-tuned weights:
-     huggingface-cli download gpriceless/detr-geo-xview \
-         checkpoint_best_ema.pth --local-dir checkpoints/ -->
+Download the xView fine-tuned weights (optional):
+
+```bash
+huggingface-cli download gpriceless/detr-geo-xview \
+    checkpoint_best_ema.pth --local-dir checkpoints/
+```
 
 ---
 
