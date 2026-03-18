@@ -17,6 +17,7 @@ from detr_geo.exceptions import (
     ModelError,
     TilingError,
 )
+from detr_geo.datasets import download_sample
 from detr_geo.io import resolve_raster_source, stac_item_to_uri
 from detr_geo.training import (
     AUGMENTATION_PRESETS,
@@ -31,6 +32,7 @@ from detr_geo.training import (
 __all__ = [
     "__version__",
     "DetrGeo",
+    "download_sample",
     "DetrGeoError",
     "CRSError",
     "MissingCRSError",
