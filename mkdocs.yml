@@ -1,0 +1,54 @@
+site_name: detr-geo
+site_description: Geospatial object detection using RF-DETR — GeoTIFF in, georeferenced vectors out.
+site_url: https://gpriceless.github.io/detr-geo/
+repo_url: https://github.com/gpriceless/detr-geo
+repo_name: gpriceless/detr-geo
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.annotate
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Guides:
+    - Geospatial Guide: geospatial-guide.md
+    - Fine-Tuning: fine-tuning-guide.md
+    - Testing: testing-guide.md
+  - API Reference: api-reference.md

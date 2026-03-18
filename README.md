@@ -3,6 +3,7 @@
 [![CI](https://github.com/gpriceless/detr-geo/actions/workflows/ci.yml/badge.svg)](https://github.com/gpriceless/detr-geo/actions/workflows/ci.yml)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://gpriceless.github.io/detr-geo/)
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/gpriceless/detr-geo/blob/main/notebooks/quickstart.ipynb)
 
 ![detr-geo: vehicle detection on satellite imagery](assets/hero-detection.png)

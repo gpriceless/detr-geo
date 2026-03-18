@@ -48,6 +48,7 @@ dependencies = [
 Homepage = "https://github.com/gpriceless/detr-geo"
 Repository = "https://github.com/gpriceless/detr-geo"
 Issues = "https://github.com/gpriceless/detr-geo/issues"
+Documentation = "https://gpriceless.github.io/detr-geo/"
 
 [project.optional-dependencies]
 rfdetr = [
@@ -61,6 +62,9 @@ viz = [
 ]
 cloud = [
     "pystac>=1.8.0",
+]
+dev = [
+    "mkdocs-material>=9.0.0",
 ]
 all = [
     "detr-geo[rfdetr]",
