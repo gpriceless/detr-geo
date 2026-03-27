@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://gpriceless.github.io/detr-geo/</loc>
+         <lastmod>2026-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://gpriceless.github.io/detr-geo/api-reference/</loc>
+         <lastmod>2026-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://gpriceless.github.io/detr-geo/fine-tuning-guide/</loc>
+         <lastmod>2026-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://gpriceless.github.io/detr-geo/geospatial-guide/</loc>
+         <lastmod>2026-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://gpriceless.github.io/detr-geo/testing-guide/</loc>
+         <lastmod>2026-03-27</lastmod>
+    </url>
+</urlset>

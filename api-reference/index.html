@@ -1,0 +1,2616 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Geospatial object detection using RF-DETR — GeoTIFF in, georeferenced vectors out.">
+      
+      
+      
+        <link rel="canonical" href="https://gpriceless.github.io/detr-geo/api-reference/">
+      
+      
+        <link rel="prev" href="../testing-guide/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>API Reference - detr-geo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="detr-geo" class="md-header__button md-logo" aria-label="detr-geo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            detr-geo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/gpriceless/detr-geo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gpriceless/detr-geo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../geospatial-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="detr-geo" class="md-nav__button md-logo" aria-label="detr-geo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    detr-geo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/gpriceless/detr-geo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gpriceless/detr-geo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geospatial-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geospatial Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fine-tuning-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#detrgeo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DetrGeo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DetrGeo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .crs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .detections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_image()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect_tiled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect_tiled()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_geojson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_geojson()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_gpkg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_gpkg()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_shp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_shp()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_map()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_detections()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I/O Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I/O Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_raster_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_raster_metadata()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bandselector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BandSelector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize_to_float32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normalize_to_float32()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_scene_stretch_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_scene_stretch_params()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_tile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_tile()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_gsd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_gsd()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_gsd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_gsd()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crs-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRS Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CRS Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pixel_to_geo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pixel_to_geo()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_transformer()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_utm_crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auto_utm_crs()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_crs()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiling-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiling Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tiling Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_tile_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_tile_grid()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross_tile_nms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cross_tile_nms()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended_overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recommended_overlap()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detection_range()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_areas()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualization-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualization Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#show_detections_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_detections()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_map_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_map()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Training Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prepare_training_dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prepare_training_dataset()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spatialsplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpatialSplitter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        train()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#augmentationpreset-augmentation_presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AugmentationPreset / AUGMENTATION_PRESETS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detections_to_coco-detections_to_yolo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detections_to_coco() / detections_to_yolo()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type Aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#detrgeo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DetrGeo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DetrGeo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#constructor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Constructor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Properties
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Properties">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .crs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .resolution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .detections
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methods
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Methods">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#set_image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        set_image()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detect_tiled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect_tiled()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_geojson" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_geojson()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_gpkg" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_gpkg()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#to_shp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        to_shp()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_map()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_detections" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_detections()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#io-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I/O Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I/O Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#load_raster_metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        load_raster_metadata()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bandselector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BandSelector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#normalize_to_float32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        normalize_to_float32()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_scene_stretch_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_scene_stretch_params()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read_tile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_tile()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compute_gsd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_gsd()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#check_gsd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        check_gsd()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#crs-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CRS Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CRS Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pixel_to_geo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pixel_to_geo()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_transformer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        get_transformer()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auto_utm_crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        auto_utm_crs()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validate_crs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        validate_crs()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tiling-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tiling Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tiling Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generate_tile_grid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_tile_grid()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross_tile_nms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cross_tile_nms()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recommended_overlap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        recommended_overlap()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detection_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detection_range()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute_areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute_areas()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualization-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visualization Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualization Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#show_detections_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_detections()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#show_map_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        show_map()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Module
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Training Module">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prepare_training_dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prepare_training_dataset()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spatialsplitter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SpatialSplitter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#train" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        train()
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#augmentationpreset-augmentation_presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AugmentationPreset / AUGMENTATION_PRESETS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detections_to_coco-detections_to_yolo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detections_to_coco() / detections_to_yolo()
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exceptions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Type Aliases
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="api-reference">API Reference<a class="headerlink" href="#api-reference" title="Permanent link">&para;</a></h1>
+<p>Complete API documentation for detr-geo v0.1.0.</p>
+<hr />
+<h2 id="detrgeo">DetrGeo<a class="headerlink" href="#detrgeo" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">DetrGeo</span>
+</code></pre></div>
+<p>The main class. Three lines to go from GeoTIFF to georeferenced detections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">dg</span> <span class="o">=</span> <span class="n">DetrGeo</span><span class="p">(</span><span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;scene.tif&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">detections</span> <span class="o">=</span> <span class="n">dg</span><span class="o">.</span><span class="n">detect_tiled</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="constructor">Constructor<a class="headerlink" href="#constructor" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">DetrGeo</span><span class="p">(</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">lazy_load</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">confidence_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">pretrain_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">custom_class_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model_size</code></td>
+<td><code>str</code></td>
+<td><code>"medium"</code></td>
+<td><code>"nano"</code>, <code>"small"</code>, <code>"medium"</code>, <code>"base"</code>, or <code>"large"</code></td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td><code>str or None</code></td>
+<td><code>None</code></td>
+<td><code>"cuda"</code>, <code>"mps"</code>, or <code>"cpu"</code>. Auto-detects if None</td>
+</tr>
+<tr>
+<td><code>lazy_load</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Defer weight download until first prediction</td>
+</tr>
+<tr>
+<td><code>confidence_threshold</code></td>
+<td><code>float</code></td>
+<td><code>0.5</code></td>
+<td>Minimum confidence for detections (0.0 to 1.0)</td>
+</tr>
+<tr>
+<td><code>pretrain_weights</code></td>
+<td><code>str or None</code></td>
+<td><code>None</code></td>
+<td>Path to custom <code>.pth</code> weights file</td>
+</tr>
+<tr>
+<td><code>custom_class_names</code></td>
+<td><code>dict[int, str] or None</code></td>
+<td><code>None</code></td>
+<td>Class ID to label mapping for fine-tuned models</td>
+</tr>
+</tbody>
+</table>
+<p><strong>COCO-pretrained (default):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">dg</span> <span class="o">=</span> <span class="n">DetrGeo</span><span class="p">(</span><span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;nano&quot;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">confidence_threshold</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>xView fine-tuned vehicle detection:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">dg</span> <span class="o">=</span> <span class="n">DetrGeo</span><span class="p">(</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">pretrain_weights</span><span class="o">=</span><span class="s2">&quot;checkpoints/checkpoint_best_ema.pth&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">custom_class_names</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Car&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Pickup Truck&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Truck&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Bus&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Other Vehicle&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>    <span class="p">},</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h3 id="properties">Properties<a class="headerlink" href="#properties" title="Permanent link">&para;</a></h3>
+<h4 id="crs"><code>.crs</code><a class="headerlink" href="#crs" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">crs</span> <span class="o">-&gt;</span> <span class="n">CRS</span> <span class="o">|</span> <span class="kc">None</span>
+</code></pre></div>
+<p>The coordinate reference system of the loaded image. <code>None</code> before <code>set_image()</code> or in pixel-only mode. Settable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:32618&quot;</span>          <span class="c1"># EPSG string</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">dg</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">CRS</span><span class="o">.</span><span class="n">from_epsg</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>   <span class="c1"># pyproj CRS object</span>
+</code></pre></div>
+<p>Raises <code>CRSError</code> on invalid input.</p>
+<h4 id="resolution"><code>.resolution</code><a class="headerlink" href="#resolution" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">resolution</span> <span class="o">-&gt;</span> <span class="nb">int</span>
+</code></pre></div>
+<p>The model's native input size in pixels. Determined by <code>model_size</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nano</td>
+<td>384</td>
+</tr>
+<tr>
+<td>small</td>
+<td>512</td>
+</tr>
+<tr>
+<td>medium</td>
+<td>576</td>
+</tr>
+<tr>
+<td>base</td>
+<td>560</td>
+</tr>
+<tr>
+<td>large</td>
+<td>704</td>
+</tr>
+</tbody>
+</table>
+<h4 id="detections"><code>.detections</code><a class="headerlink" href="#detections" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">detections</span> <span class="o">-&gt;</span> <span class="n">GeoDataFrame</span> <span class="o">|</span> <span class="kc">None</span>
+</code></pre></div>
+<p>The most recent detection results. <code>None</code> until <code>detect()</code> or <code>detect_tiled()</code> is called.</p>
+<p><strong>Columns in georeferenced mode:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>geometry</code></td>
+<td>Polygon</td>
+<td>Georeferenced bounding box (4-corner polygon)</td>
+</tr>
+<tr>
+<td><code>class_id</code></td>
+<td>int</td>
+<td>Numeric class ID</td>
+</tr>
+<tr>
+<td><code>class_name</code></td>
+<td>str</td>
+<td>Human-readable label</td>
+</tr>
+<tr>
+<td><code>confidence</code></td>
+<td>float</td>
+<td>Detection confidence (0.0--1.0)</td>
+</tr>
+<tr>
+<td><code>centroid_x</code></td>
+<td>float</td>
+<td>Polygon centroid X</td>
+</tr>
+<tr>
+<td><code>centroid_y</code></td>
+<td>float</td>
+<td>Polygon centroid Y</td>
+</tr>
+</tbody>
+</table>
+<p>In pixel-only mode (no CRS), returns a DataFrame with <code>x1, y1, x2, y2</code> pixel columns instead of geometry.</p>
+<hr />
+<h3 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">&para;</a></h3>
+<h4 id="set_image"><code>set_image()</code><a class="headerlink" href="#set_image" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="n">georeferenced</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">suppress_gsd_warning</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Load a geospatial raster. Reads metadata (CRS, transform, dimensions) without loading pixel data into memory.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td><code>str or Path</code></td>
+<td>--</td>
+<td>Path to GeoTIFF, COG URL, S3 URI, or pystac.Item</td>
+</tr>
+<tr>
+<td><code>bands</code></td>
+<td><code>tuple or str</code></td>
+<td><code>"rgb"</code></td>
+<td>Band selection preset or 1-indexed tuple</td>
+</tr>
+<tr>
+<td><code>georeferenced</code></td>
+<td><code>bool</code></td>
+<td><code>True</code></td>
+<td>Read CRS/transform from raster</td>
+</tr>
+<tr>
+<td><code>suppress_gsd_warning</code></td>
+<td><code>bool</code></td>
+<td><code>False</code></td>
+<td>Silence GSD range warnings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Band presets:</strong> <code>"rgb"</code> (1,2,3), <code>"naip_rgb"</code> (1,2,3), <code>"sentinel2_rgb"</code> (4,3,2), <code>"worldview_rgb"</code> (5,3,2)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;sentinel2.tif&quot;</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;sentinel2_rgb&quot;</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;custom.tif&quot;</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;no_crs.tif&quot;</span><span class="p">,</span> <span class="n">georeferenced</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p><strong>Raises:</strong> <code>FileNotFoundError</code>, <code>MissingCRSError</code>, <code>BandError</code></p>
+<hr />
+<h4 id="detect"><code>detect()</code><a class="headerlink" href="#detect" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GeoDataFrame</span>
+</code></pre></div>
+<p>Single-pass detection. Loads the entire image into memory.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>threshold</code></td>
+<td><code>float or None</code></td>
+<td><code>None</code></td>
+<td>Confidence override (uses constructor default if None)</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>list[str] or None</code></td>
+<td><code>None</code></td>
+<td>Filter to these class names only</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">detections</span> <span class="o">=</span> <span class="n">dg</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;car&quot;</span><span class="p">,</span> <span class="s2">&quot;truck&quot;</span><span class="p">])</span>
+</code></pre></div>
+<p><strong>Raises:</strong> <code>DetrGeoError</code> if no image set. Issues <code>ResourceWarning</code> if raster exceeds ~1 GB.</p>
+<hr />
+<h4 id="detect_tiled"><code>detect_tiled()</code><a class="headerlink" href="#detect_tiled" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">detect_tiled</span><span class="p">(</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="n">tile_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="n">overlap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="n">nms_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">nodata_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">batch_size</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GeoDataFrame</span>
+</code></pre></div>
+<p>Tiled detection for large rasters. Splits the image into overlapping tiles, runs detection on each, offsets boxes to global coordinates, and deduplicates with cross-tile class-aware NMS.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tile_size</code></td>
+<td><code>int or None</code></td>
+<td><code>None</code></td>
+<td>Tile edge length in pixels. <code>None</code> = model native resolution</td>
+</tr>
+<tr>
+<td><code>overlap</code></td>
+<td><code>float</code></td>
+<td><code>0.2</code></td>
+<td>Fractional overlap between tiles (0.0--0.49)</td>
+</tr>
+<tr>
+<td><code>nms_threshold</code></td>
+<td><code>float</code></td>
+<td><code>0.5</code></td>
+<td>IoU threshold for cross-tile deduplication</td>
+</tr>
+<tr>
+<td><code>nodata_threshold</code></td>
+<td><code>float</code></td>
+<td><code>0.5</code></td>
+<td>Skip tiles with nodata fraction above this</td>
+</tr>
+<tr>
+<td><code>threshold</code></td>
+<td><code>float or None</code></td>
+<td><code>None</code></td>
+<td>Confidence override</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td><code>list[str] or None</code></td>
+<td><code>None</code></td>
+<td>Filter to specific class names</td>
+</tr>
+<tr>
+<td><code>batch_size</code></td>
+<td><code>int or None</code></td>
+<td><code>None</code></td>
+<td>Tiles per batch. Auto-detected from GPU memory</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">detections</span> <span class="o">=</span> <span class="n">dg</span><span class="o">.</span><span class="n">detect_tiled</span><span class="p">(</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">overlap</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>    <span class="n">nms_threshold</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="n">threshold</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="p">)</span>
+</code></pre></div>
+<p><strong>Raises:</strong> <code>DetrGeoError</code> if no image set.</p>
+<hr />
+<h4 id="to_geojson"><code>to_geojson()</code><a class="headerlink" href="#to_geojson" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">to_geojson</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">simplify_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p>Export to GeoJSON. Automatically reprojects to WGS84 (EPSG:4326) per the GeoJSON specification.</p>
+<p><strong>Raises:</strong> <code>ExportError</code> if no detections.</p>
+<h4 id="to_gpkg"><code>to_gpkg()</code><a class="headerlink" href="#to_gpkg" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">to_gpkg</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="s2">&quot;detections&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Export to GeoPackage. Preserves the original CRS. Supports multiple named layers.</p>
+<p><strong>Raises:</strong> <code>ExportError</code> if no detections.</p>
+<h4 id="to_shp"><code>to_shp()</code><a class="headerlink" href="#to_shp" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">to_shp</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</code></pre></div>
+<p>Export to Shapefile. Issues a warning about legacy format limitations (10-char field names, 2 GB limit, sidecar files).</p>
+<p><strong>Raises:</strong> <code>ExportError</code> if no detections.</p>
+<hr />
+<h4 id="show_map"><code>show_map()</code><a class="headerlink" href="#show_map" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">show_map</span><span class="p">(</span><span class="n">basemap</span><span class="o">=</span><span class="s2">&quot;SATELLITE&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">leafmap</span><span class="o">.</span><span class="n">Map</span>
+</code></pre></div>
+<p>Interactive web map with detection polygons on a satellite basemap. Best in Jupyter.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>basemap</code></td>
+<td><code>str</code></td>
+<td><code>"SATELLITE"</code></td>
+<td><code>"SATELLITE"</code>, <code>"ROADMAP"</code>, or <code>"TERRAIN"</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Raises:</strong> <code>DetrGeoError</code> if no detections. <code>ImportError</code> if leafmap not installed.</p>
+<h4 id="show_detections"><code>show_detections()</code><a class="headerlink" href="#show_detections" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">dg</span><span class="o">.</span><span class="n">show_detections</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">Figure</span><span class="p">,</span> <span class="n">Axes</span><span class="p">)</span>
+</code></pre></div>
+<p>Static matplotlib plot with bounding boxes on the source image. Only works after <code>detect()</code> (not <code>detect_tiled()</code>), because it needs the in-memory image.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>figsize</code></td>
+<td><code>tuple[int, int]</code></td>
+<td><code>(12, 10)</code></td>
+<td>Figure size in inches</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Raises:</strong> <code>DetrGeoError</code> if no detections or no image.</p>
+<hr />
+<h2 id="io-module">I/O Module<a class="headerlink" href="#io-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo.io</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="n">load_raster_metadata</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>    <span class="n">BandSelector</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>    <span class="n">normalize_to_float32</span><span class="p">,</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="n">compute_scene_stretch_params</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>    <span class="n">read_tile</span><span class="p">,</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a>    <span class="n">compute_gsd</span><span class="p">,</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>    <span class="n">check_gsd</span><span class="p">,</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>    <span class="n">compute_nodata_fraction</span><span class="p">,</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a>    <span class="n">fill_nodata</span><span class="p">,</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="load_raster_metadata">load_raster_metadata()<a class="headerlink" href="#load_raster_metadata" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">load_raster_metadata</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RasterMetadata</span>
+</code></pre></div>
+<p>Read raster metadata without loading pixel data. Returns a dataclass:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>crs</code></td>
+<td><code>CRS or None</code></td>
+<td>Coordinate reference system</td>
+</tr>
+<tr>
+<td><code>transform</code></td>
+<td><code>Affine</code></td>
+<td>Rasterio affine transform</td>
+</tr>
+<tr>
+<td><code>width</code>, <code>height</code></td>
+<td><code>int</code></td>
+<td>Dimensions in pixels</td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td><code>int</code></td>
+<td>Number of bands</td>
+</tr>
+<tr>
+<td><code>dtype</code></td>
+<td><code>str</code></td>
+<td>Pixel data type</td>
+</tr>
+<tr>
+<td><code>nodata</code></td>
+<td><code>float or None</code></td>
+<td>Nodata value</td>
+</tr>
+<tr>
+<td><code>has_alpha</code></td>
+<td><code>bool</code></td>
+<td>Whether an alpha band exists</td>
+</tr>
+<tr>
+<td><code>bounds</code></td>
+<td><code>tuple</code></td>
+<td><code>(left, bottom, right, top)</code></td>
+</tr>
+<tr>
+<td><code>gsd</code></td>
+<td><code>float or None</code></td>
+<td>Ground sample distance in meters/pixel</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">meta</span> <span class="o">=</span> <span class="n">load_raster_metadata</span><span class="p">(</span><span class="s2">&quot;scene.tif&quot;</span><span class="p">)</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">meta</span><span class="o">.</span><span class="n">width</span><span class="si">}</span><span class="s2">x</span><span class="si">{</span><span class="n">meta</span><span class="o">.</span><span class="n">height</span><span class="si">}</span><span class="s2">, CRS: </span><span class="si">{</span><span class="n">meta</span><span class="o">.</span><span class="n">crs</span><span class="si">}</span><span class="s2">, GSD: </span><span class="si">{</span><span class="n">meta</span><span class="o">.</span><span class="n">gsd</span><span class="si">}</span><span class="s2">m&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="bandselector">BandSelector<a class="headerlink" href="#bandselector" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">BandSelector</span><span class="p">(</span><span class="n">bands</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Maps sensor bands to RGB. Presets:</p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Bands</th>
+<th>Sensor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"rgb"</code></td>
+<td>1, 2, 3</td>
+<td>Generic RGB</td>
+</tr>
+<tr>
+<td><code>"naip_rgb"</code></td>
+<td>1, 2, 3</td>
+<td>NAIP</td>
+</tr>
+<tr>
+<td><code>"sentinel2_rgb"</code></td>
+<td>4, 3, 2</td>
+<td>Sentinel-2</td>
+</tr>
+<tr>
+<td><code>"worldview_rgb"</code></td>
+<td>5, 3, 2</td>
+<td>WorldView</td>
+</tr>
+</tbody>
+</table>
+<h3 id="normalize_to_float32">normalize_to_float32()<a class="headerlink" href="#normalize_to_float32" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">normalize_to_float32</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stretch</span><span class="o">=</span><span class="s2">&quot;percentile&quot;</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">98.0</span><span class="p">),</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>                     <span class="n">stretch_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nodata_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">StretchParams</span><span class="p">)</span>
+</code></pre></div>
+<p>Normalize raster data to float32 in [0, 1] for model input. Three stretch modes:</p>
+<ul>
+<li><code>"percentile"</code> (default) -- 2nd-to-98th percentile. Handles satellite 16-bit well.</li>
+<li><code>"minmax"</code> -- full value range. Sensitive to outliers.</li>
+<li><code>"none"</code> -- passthrough. Data must already be [0, 1].</li>
+</ul>
+<h3 id="compute_scene_stretch_params">compute_scene_stretch_params()<a class="headerlink" href="#compute_scene_stretch_params" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">compute_scene_stretch_params</span><span class="p">(</span><span class="n">raster_path</span><span class="p">,</span> <span class="n">bands</span><span class="p">,</span> <span class="n">percentiles</span><span class="o">=</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">98.0</span><span class="p">),</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>                             <span class="n">sample_tiles</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">tile_size</span><span class="o">=</span><span class="mi">512</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StretchParams</span>
+</code></pre></div>
+<p>Sample random tiles from a raster to compute consistent normalization parameters. Apply the result to every tile for uniform brightness across a tiled detection:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">params</span> <span class="o">=</span> <span class="n">compute_scene_stretch_params</span><span class="p">(</span><span class="s2">&quot;large_scene.tif&quot;</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="n">normalized</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">normalize_to_float32</span><span class="p">(</span><span class="n">tile_data</span><span class="p">,</span> <span class="n">stretch_params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="read_tile">read_tile()<a class="headerlink" href="#read_tile" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">read_tile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">bands</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<p>Memory-efficient windowed read from a raster.</p>
+<ul>
+<li><code>window</code>: <code>(col_off, row_off, width, height)</code> in pixels</li>
+<li><code>bands</code>: 1-indexed band list. <code>None</code> reads all.</li>
+<li>Returns: <code>(data (bands, H, W), nodata_mask (H, W) or None)</code></li>
+</ul>
+<h3 id="compute_gsd">compute_gsd()<a class="headerlink" href="#compute_gsd" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">compute_gsd</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Ground sample distance in meters/pixel from the affine transform and CRS.</p>
+<h3 id="check_gsd">check_gsd()<a class="headerlink" href="#check_gsd" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="n">check_gsd</span><span class="p">(</span><span class="n">gsd</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+<p>Warn if GSD is outside the optimal 0.1--0.5 m/px range. If <code>strict=True</code>, raises <code>BandError</code> above 5.0 m/px.</p>
+<hr />
+<h2 id="crs-module">CRS Module<a class="headerlink" href="#crs-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo.crs</span><span class="w"> </span><span class="kn">import</span> <span class="n">pixel_to_geo</span><span class="p">,</span> <span class="n">get_transformer</span><span class="p">,</span> <span class="n">validate_crs</span><span class="p">,</span> <span class="n">auto_utm_crs</span><span class="p">,</span> <span class="n">has_rotation</span>
+</code></pre></div>
+<h3 id="pixel_to_geo">pixel_to_geo()<a class="headerlink" href="#pixel_to_geo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">pixel_to_geo</span><span class="p">(</span><span class="n">bbox</span><span class="p">,</span> <span class="n">transform</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Polygon</span>
+</code></pre></div>
+<p>Convert a pixel bounding box <code>(x_min, y_min, x_max, y_max)</code> to a CRS-space Shapely polygon. Transforms all 4 corners independently, handling rotated affine transforms correctly.</p>
+<h3 id="get_transformer">get_transformer()<a class="headerlink" href="#get_transformer" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="n">get_transformer</span><span class="p">(</span><span class="n">src_crs</span><span class="p">,</span> <span class="n">dst_crs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Transformer</span>
+</code></pre></div>
+<p>Cached pyproj Transformer with <code>always_xy=True</code> to avoid axis order surprises.</p>
+<h3 id="auto_utm_crs">auto_utm_crs()<a class="headerlink" href="#auto_utm_crs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">auto_utm_crs</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CRS</span>
+</code></pre></div>
+<p>Return the appropriate UTM zone for a point. EPSG:326xx (north) or EPSG:327xx (south).</p>
+<h3 id="validate_crs">validate_crs()<a class="headerlink" href="#validate_crs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">validate_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">,</span> <span class="n">georeferenced</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CRS</span> <span class="o">|</span> <span class="kc">None</span>
+</code></pre></div>
+<p>Validate and parse a CRS value. Raises <code>MissingCRSError</code> or <code>CRSError</code>.</p>
+<hr />
+<h2 id="tiling-module">Tiling Module<a class="headerlink" href="#tiling-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo.tiling</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>    <span class="n">generate_tile_grid</span><span class="p">,</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>    <span class="n">cross_tile_nms</span><span class="p">,</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>    <span class="n">recommended_overlap</span><span class="p">,</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>    <span class="n">detection_range</span><span class="p">,</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a>    <span class="n">process_tiles</span><span class="p">,</span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="generate_tile_grid">generate_tile_grid()<a class="headerlink" href="#generate_tile_grid" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">generate_tile_grid</span><span class="p">(</span><span class="n">raster_width</span><span class="p">,</span> <span class="n">raster_height</span><span class="p">,</span> <span class="n">tile_size</span><span class="p">,</span> <span class="n">overlap_ratio</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TileInfo</span><span class="p">]</span>
+</code></pre></div>
+<p>Generate a grid of overlapping tiles covering the raster.</p>
+<h3 id="cross_tile_nms">cross_tile_nms()<a class="headerlink" href="#cross_tile_nms" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">cross_tile_nms</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">class_ids</span><span class="p">,</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+</code></pre></div>
+<p>Class-aware non-maximum suppression. Same-class detections with IoU above threshold are suppressed. Different-class overlaps are preserved.</p>
+<h3 id="recommended_overlap">recommended_overlap()<a class="headerlink" href="#recommended_overlap" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="n">recommended_overlap</span><span class="p">(</span><span class="n">object_size_pixels</span><span class="p">,</span> <span class="n">object_size_fraction</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tile_size</span><span class="o">=</span><span class="mi">576</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span>
+</code></pre></div>
+<p>Estimate the overlap ratio needed to avoid missing objects at tile boundaries, given expected object size in pixels.</p>
+<h3 id="detection_range">detection_range()<a class="headerlink" href="#detection_range" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">detection_range</span><span class="p">(</span><span class="n">tile_size</span><span class="p">,</span> <span class="n">gsd</span><span class="p">,</span> <span class="n">overlap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+</code></pre></div>
+<p>Compute the detectable object size range in meters for a given tile size and GSD:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">min_m</span><span class="p">,</span> <span class="n">max_m</span> <span class="o">=</span> <span class="n">detection_range</span><span class="p">(</span><span class="n">tile_size</span><span class="o">=</span><span class="mi">576</span><span class="p">,</span> <span class="n">gsd</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="c1"># (3.0, 138.2) -- objects from 3m to 138m are detectable</span>
+</code></pre></div>
+<hr />
+<h2 id="export-module">Export Module<a class="headerlink" href="#export-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo.export</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>    <span class="n">build_geodataframe</span><span class="p">,</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a>    <span class="n">build_dataframe_pixel</span><span class="p">,</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>    <span class="n">compute_areas</span><span class="p">,</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a>    <span class="n">export_geojson</span><span class="p">,</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a>    <span class="n">export_gpkg</span><span class="p">,</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a>    <span class="n">export_shp</span><span class="p">,</span>
+<a id="__codelineno-41-8" name="__codelineno-41-8" href="#__codelineno-41-8"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="compute_areas">compute_areas()<a class="headerlink" href="#compute_areas" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">compute_areas</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">equal_area_crs</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Series</span>
+</code></pre></div>
+<p>Compute polygon areas in square meters. Auto-detects UTM zone for geographic CRS data. Override with an explicit equal-area CRS if needed.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="n">areas_m2</span> <span class="o">=</span> <span class="n">compute_areas</span><span class="p">(</span><span class="n">dg</span><span class="o">.</span><span class="n">detections</span><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="visualization-module">Visualization Module<a class="headerlink" href="#visualization-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo.viz</span><span class="w"> </span><span class="kn">import</span> <span class="n">show_detections</span><span class="p">,</span> <span class="n">show_map</span><span class="p">,</span> <span class="n">get_class_colors</span>
+</code></pre></div>
+<h3 id="show_detections_1">show_detections()<a class="headerlink" href="#show_detections_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">show_detections</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">gdf</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">min_confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>                <span class="n">top_n</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">class_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>                <span class="n">show_labels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">)</span>
+</code></pre></div>
+<p>Render bounding boxes on the source image using matplotlib.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td>Source image <code>(H, W, 3)</code> in [0, 1] or [0, 255]</td>
+</tr>
+<tr>
+<td><code>min_confidence</code></td>
+<td>Filter detections below this score</td>
+</tr>
+<tr>
+<td><code>top_n</code></td>
+<td>Limit to top N detections by confidence</td>
+</tr>
+<tr>
+<td><code>classes</code></td>
+<td>Filter to specific class names</td>
+</tr>
+<tr>
+<td><code>class_colors</code></td>
+<td>Override colors: <code>{"Car": "red", "Bus": "blue"}</code></td>
+</tr>
+<tr>
+<td><code>save_path</code></td>
+<td>Save figure to file</td>
+</tr>
+<tr>
+<td><code>dpi</code></td>
+<td>Resolution for saved output</td>
+</tr>
+</tbody>
+</table>
+<h3 id="show_map_1">show_map()<a class="headerlink" href="#show_map_1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="n">show_map</span><span class="p">(</span><span class="n">gdf</span><span class="p">,</span> <span class="n">basemap</span><span class="o">=</span><span class="s2">&quot;SATELLITE&quot;</span><span class="p">,</span> <span class="n">min_confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">classes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a>         <span class="n">class_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_detections</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">map_object</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">leafmap</span><span class="o">.</span><span class="n">Map</span>
+</code></pre></div>
+<p>Interactive web map. Auto-reprojects to WGS84. Click polygons to see class, confidence, and area.</p>
+<hr />
+<h2 id="training-module">Training Module<a class="headerlink" href="#training-module" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>    <span class="n">prepare_training_dataset</span><span class="p">,</span>
+<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a>    <span class="n">SpatialSplitter</span><span class="p">,</span>
+<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a>    <span class="n">train</span><span class="p">,</span>
+<a id="__codelineno-47-5" name="__codelineno-47-5" href="#__codelineno-47-5"></a>    <span class="n">detections_to_coco</span><span class="p">,</span>
+<a id="__codelineno-47-6" name="__codelineno-47-6" href="#__codelineno-47-6"></a>    <span class="n">detections_to_yolo</span><span class="p">,</span>
+<a id="__codelineno-47-7" name="__codelineno-47-7" href="#__codelineno-47-7"></a>    <span class="n">AUGMENTATION_PRESETS</span><span class="p">,</span>
+<a id="__codelineno-47-8" name="__codelineno-47-8" href="#__codelineno-47-8"></a>    <span class="n">AugmentationPreset</span><span class="p">,</span>
+<a id="__codelineno-47-9" name="__codelineno-47-9" href="#__codelineno-47-9"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="prepare_training_dataset">prepare_training_dataset()<a class="headerlink" href="#prepare_training_dataset" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">prepare_training_dataset</span><span class="p">(</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>    <span class="n">raster_path</span><span class="p">,</span> <span class="n">annotations_path</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">,</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>    <span class="n">tile_size</span><span class="o">=</span><span class="mi">576</span><span class="p">,</span> <span class="n">overlap_ratio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">class_mapping</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a>    <span class="n">min_annotation_area</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">max_background_per_annotated</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>    <span class="n">bands</span><span class="o">=</span><span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="n">split_method</span><span class="o">=</span><span class="s2">&quot;block&quot;</span><span class="p">,</span> <span class="n">split_ratios</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+<a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+</code></pre></div>
+<p>Convert a GeoTIFF + vector annotations into a COCO-format training dataset. Handles:
+- CRS alignment between raster and annotations
+- Tiling to model-sized chips
+- Clipping annotations to tile boundaries
+- Spatial block splitting with buffer zones
+- Background tile ratio control</p>
+<p>Returns a stats dict with tile and annotation counts per split.</p>
+<h3 id="spatialsplitter">SpatialSplitter<a class="headerlink" href="#spatialsplitter" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="n">SpatialSplitter</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;block&quot;</span><span class="p">,</span> <span class="n">ratios</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="n">buffer_tiles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</code></pre></div>
+<p>Spatial-aware train/val/test splitting. The <code>"block"</code> method assigns contiguous regions to splits with buffer zones between them, preventing the model from memorizing scene-specific lighting or shadow patterns that leak across nearby tiles.</p>
+<h3 id="train">train()<a class="headerlink" href="#train" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">train</span><span class="p">(</span><span class="n">adapter</span><span class="p">,</span> <span class="n">dataset_dir</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">augmentation_preset</span><span class="o">=</span><span class="s2">&quot;satellite_default&quot;</span><span class="p">,</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>      <span class="n">augmentation_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">resume</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>      <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span>
+</code></pre></div>
+<p>Fine-tune RF-DETR on a COCO-format dataset. Applies geospatial augmentations: 90-degree rotation, horizontal flip, vertical flip, and color jitter tuned for overhead imagery.</p>
+<h3 id="augmentationpreset-augmentation_presets">AugmentationPreset / AUGMENTATION_PRESETS<a class="headerlink" href="#augmentationpreset-augmentation_presets" title="Permanent link">&para;</a></h3>
+<p>Built-in presets for overhead imagery:</p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Best For</th>
+<th>Jitter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"satellite_default"</code></td>
+<td>Satellite (0.3--0.5m GSD)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><code>"aerial_default"</code></td>
+<td>Aerial (0.1--0.3m GSD)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>"drone_default"</code></td>
+<td>Drone (&lt;0.1m GSD)</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<p>All presets enable rotation and flipping -- critical for overhead imagery where there is no canonical "up" direction.</p>
+<h3 id="detections_to_coco-detections_to_yolo">detections_to_coco() / detections_to_yolo()<a class="headerlink" href="#detections_to_coco-detections_to_yolo" title="Permanent link">&para;</a></h3>
+<p>Convert detection GeoDataFrames to COCO JSON or YOLO TXT format. Useful for the active learning loop: detect, review, correct, retrain.</p>
+<hr />
+<h2 id="exceptions">Exceptions<a class="headerlink" href="#exceptions" title="Permanent link">&para;</a></h2>
+<p>All exceptions inherit from <code>DetrGeoError</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">DetrGeoError</span><span class="p">,</span> <span class="n">CRSError</span><span class="p">,</span> <span class="n">MissingCRSError</span><span class="p">,</span> <span class="n">TilingError</span><span class="p">,</span> <span class="n">ModelError</span><span class="p">,</span> <span class="n">BandError</span><span class="p">,</span> <span class="n">ExportError</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Exception</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DetrGeoError</code></td>
+<td>Base class. Catch-all.</td>
+</tr>
+<tr>
+<td><code>CRSError</code></td>
+<td>Invalid CRS string or incompatible transform</td>
+</tr>
+<tr>
+<td><code>MissingCRSError</code></td>
+<td>Raster has no CRS in georeferenced mode</td>
+</tr>
+<tr>
+<td><code>TilingError</code></td>
+<td>Invalid tile size or overlap</td>
+</tr>
+<tr>
+<td><code>ModelError</code></td>
+<td>Unsupported model size, rfdetr not installed, inference failure</td>
+</tr>
+<tr>
+<td><code>BandError</code></td>
+<td>Invalid band index, wrong channel count</td>
+</tr>
+<tr>
+<td><code>ExportError</code></td>
+<td>Write failure, no detections to export</td>
+</tr>
+</tbody>
+</table>
+<p>All exceptions store additional context:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>    <span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;file.tif&quot;</span><span class="p">)</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="k">except</span> <span class="n">DetrGeoError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+<a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>           <span class="c1"># Human-readable message</span>
+<a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>   <span class="c1"># Dict with additional details</span>
+</code></pre></div>
+<hr />
+<h2 id="type-aliases">Type Aliases<a class="headerlink" href="#type-aliases" title="Permanent link">&para;</a></h2>
+<p>Defined in <code>detr_geo._typing</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>PixelBBox</code></td>
+<td><code>tuple[float, float, float, float]</code> -- (x_min, y_min, x_max, y_max)</td>
+</tr>
+<tr>
+<td><code>GeoBBox</code></td>
+<td><code>tuple[float, float, float, float]</code> -- (west, south, east, north)</td>
+</tr>
+<tr>
+<td><code>TileWindow</code></td>
+<td><code>tuple[int, int, int, int]</code> -- (col_off, row_off, width, height)</td>
+</tr>
+<tr>
+<td><code>DetectionResult</code></td>
+<td><code>TypedDict</code> with bbox, confidence, class_id lists</td>
+</tr>
+<tr>
+<td><code>TileInfo</code></td>
+<td><code>TypedDict</code> with window, offsets, nodata_fraction</td>
+</tr>
+<tr>
+<td><code>ImageArray</code></td>
+<td><code>NDArray[float32]</code> -- (bands, height, width)</td>
+</tr>
+<tr>
+<td><code>ModelSize</code></td>
+<td><code>str</code> -- "nano", "small", "medium", "base", "large"</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1834 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Geospatial object detection using RF-DETR — GeoTIFF in, georeferenced vectors out.">
+      
+      
+      
+        <link rel="canonical" href="https://gpriceless.github.io/detr-geo/fine-tuning-guide/">
+      
+      
+        <link rel="prev" href="../geospatial-guide/">
+      
+      
+        <link rel="next" href="../testing-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Fine-Tuning - detr-geo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fine-tuning-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="detr-geo" class="md-header__button md-logo" aria-label="detr-geo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            detr-geo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Fine-Tuning
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/gpriceless/detr-geo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gpriceless/detr-geo
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../geospatial-guide/" class="md-tabs__link">
+          
+  
+  
+  Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../api-reference/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="detr-geo" class="md-nav__button md-logo" aria-label="detr-geo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    detr-geo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/gpriceless/detr-geo" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    gpriceless/detr-geo
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guides
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geospatial-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geospatial Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fine-Tuning
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-fine-tune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Fine-Tune?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-prepare-your-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Prepare Your Dataset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Prepare Your Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Need
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run the Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-understand-spatial-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Understand Spatial Splitting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Understand Spatial Splitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-random-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem with Random Splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block Splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-random-is-acceptable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Random Is Acceptable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-train" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Train
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Train">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vram-and-batch-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VRAM and Batch Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#augmentation-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Augmentation Presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resuming-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resuming Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-monitor-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Monitor Training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 4: Monitor Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typical-training-timeline-rtx-3090-medium-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typical Training Timeline (RTX 3090, medium model)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-deploy-fine-tuned-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy Fine-Tuned Weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xview-training-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        xView Training Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-learning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active Learning Loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda-out-of-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CUDA out of memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-loss-is-nan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training loss is NaN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-map-stays-at-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation mAP stays at 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-detects-nothing-after-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model detects nothing after fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weights-file-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weights file not found
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-fine-tune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Fine-Tune?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hardware" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hardware
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Software
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-prepare-your-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Prepare Your Dataset
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Prepare Your Dataset">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-you-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You Need
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Run the Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Output Structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-understand-spatial-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: Understand Spatial Splitting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 2: Understand Spatial Splitting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem-with-random-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem with Random Splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-splitting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Block Splitting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#when-random-is-acceptable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When Random Is Acceptable
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-train" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Train
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 3: Train">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vram-and-batch-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VRAM and Batch Size
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#augmentation-presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Augmentation Presets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#learning-rate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Learning Rate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#resuming-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resuming Training
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-monitor-training" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4: Monitor Training
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 4: Monitor Training">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typical-training-timeline-rtx-3090-medium-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Typical Training Timeline (RTX 3090, medium model)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-deploy-fine-tuned-weights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5: Deploy Fine-Tuned Weights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#xview-training-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        xView Training Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#active-learning-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Active Learning Loop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cuda-out-of-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CUDA out of memory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#training-loss-is-nan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training loss is NaN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-map-stays-at-0" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Validation mAP stays at 0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#model-detects-nothing-after-fine-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Model detects nothing after fine-tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#weights-file-not-found" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Weights file not found
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="fine-tuning-guide">Fine-Tuning Guide<a class="headerlink" href="#fine-tuning-guide" title="Permanent link">&para;</a></h1>
+<p>Train RF-DETR to detect objects in overhead imagery. Out of the box, RF-DETR uses COCO weights trained on ground-level photography -- it has never seen a car from above. Fine-tuning on labeled satellite or aerial data transforms it into a reliable overhead detector.</p>
+<p>This guide covers the full pipeline: dataset preparation, spatial splitting, training configuration, and deployment of custom weights. The xView vehicle detection model was trained using this exact workflow.</p>
+<hr />
+<h2 id="why-fine-tune">Why Fine-Tune?<a class="headerlink" href="#why-fine-tune" title="Permanent link">&para;</a></h2>
+<p>The COCO-pretrained model was trained on 80 object classes photographed from ground level. From an overhead perspective, objects look completely different:</p>
+<ul>
+<li>Cars become small rectangles instead of side-profile shapes</li>
+<li>Buildings appear as rooftops, not facades</li>
+<li>There is no horizon, no perspective convergence</li>
+<li>Shadows extend away from objects at consistent angles</li>
+</ul>
+<p>The result: COCO RF-DETR labels overhead vehicles as "motorcycle", "skateboard", "boat", or simply misses them. Fine-tuning on even a few thousand labeled overhead examples solves this. The xView fine-tuned model reliably detects vehicles at 0.3m GSD where the COCO model fails almost entirely.</p>
+<hr />
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h3 id="hardware">Hardware<a class="headerlink" href="#hardware" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Minimum</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPU</td>
+<td>RTX 2070 (8 GB VRAM)</td>
+<td>RTX 3090 / A100 (24+ GB)</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>4 cores</td>
+<td>8+ cores</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>16 GB</td>
+<td>32 GB</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>10 GB free</td>
+<td>20 GB free</td>
+</tr>
+</tbody>
+</table>
+<p>Training on CPU is technically possible but impractically slow -- hours per epoch instead of minutes.</p>
+<h3 id="software">Software<a class="headerlink" href="#software" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>detr-geo<span class="o">[</span>all<span class="o">]</span>
+</code></pre></div>
+<p>Verify GPU access:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>         <span class="c1"># NVIDIA GPU</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">mps</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>  <span class="c1"># Apple Silicon</span>
+</code></pre></div>
+<hr />
+<h2 id="step-1-prepare-your-dataset">Step 1: Prepare Your Dataset<a class="headerlink" href="#step-1-prepare-your-dataset" title="Permanent link">&para;</a></h2>
+<p>detr-geo converts a GeoTIFF and vector annotations into a COCO-format training dataset. It handles CRS alignment, tiling, annotation clipping, and spatial splitting automatically.</p>
+<h3 id="what-you-need">What You Need<a class="headerlink" href="#what-you-need" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p><strong>A georeferenced raster</strong> (GeoTIFF). RGB, any CRS, 8-bit or 16-bit. Projected CRS (UTM) is ideal.</p>
+</li>
+<li>
+<p><strong>Vector annotations</strong> (GeoJSON, GeoPackage, or Shapefile) with polygon or bounding box geometries and a class attribute. The CRS can differ from the raster -- detr-geo reprojects automatically.</p>
+</li>
+</ol>
+<h3 id="run-the-pipeline">Run the Pipeline<a class="headerlink" href="#run-the-pipeline" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">prepare_training_dataset</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">stats</span> <span class="o">=</span> <span class="n">prepare_training_dataset</span><span class="p">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">raster_path</span><span class="o">=</span><span class="s2">&quot;satellite_scene.tif&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">annotations_path</span><span class="o">=</span><span class="s2">&quot;labels.geojson&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">output_dir</span><span class="o">=</span><span class="s2">&quot;training_data/&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">tile_size</span><span class="o">=</span><span class="mi">576</span><span class="p">,</span>                  <span class="c1"># Match model native resolution</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">overlap_ratio</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>              <span class="c1"># No overlap for training tiles</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">min_annotation_area</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>        <span class="c1"># Skip tiny annotations (&lt;100 px^2)</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="n">split_method</span><span class="o">=</span><span class="s2">&quot;block&quot;</span><span class="p">,</span>           <span class="c1"># Spatial splitting (see below)</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">split_ratios</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">)</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1"># {&#39;train_tiles&#39;: 1200, &#39;train_annotations&#39;: 8500,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="c1">#  &#39;val_tiles&#39;: 225, &#39;val_annotations&#39;: 1600,</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="c1">#  &#39;test_tiles&#39;: 75, &#39;test_annotations&#39;: 530,</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="c1">#  &#39;buffer_tiles&#39;: 50}</span>
+</code></pre></div>
+<h3 id="output-structure">Output Structure<a class="headerlink" href="#output-structure" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>training_data/
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  train/
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    images/
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>      tile_0000.jpg
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>      tile_0001.jpg
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>      ...
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    _annotations.coco.json
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  valid/
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    images/
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>      tile_0000.jpg
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>      ...
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    _annotations.coco.json
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  test/
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    images/
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>      ...
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    _annotations.coco.json
+</code></pre></div>
+<h3 id="key-parameters">Key Parameters<a class="headerlink" href="#key-parameters" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tile_size</code></td>
+<td>Tile edge length in pixels. Match the model's native resolution (576 for medium)</td>
+</tr>
+<tr>
+<td><code>overlap_ratio</code></td>
+<td>Overlap between training tiles. 0.0 is standard. Non-zero creates more tiles but improves boundary object coverage</td>
+</tr>
+<tr>
+<td><code>min_annotation_area</code></td>
+<td>Discard annotations smaller than this many square pixels. Removes noise</td>
+</tr>
+<tr>
+<td><code>max_background_per_annotated</code></td>
+<td>Ratio of empty tiles to annotated tiles. Controls class balance</td>
+</tr>
+<tr>
+<td><code>class_mapping</code></td>
+<td>Maps class attribute values to integer IDs. Auto-generated if not provided</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="step-2-understand-spatial-splitting">Step 2: Understand Spatial Splitting<a class="headerlink" href="#step-2-understand-spatial-splitting" title="Permanent link">&para;</a></h2>
+<p>This is the most important difference between geospatial ML and standard computer vision. If you skip this section, your model will appear to work well but will fail on new data.</p>
+<h3 id="the-problem-with-random-splitting">The Problem with Random Splitting<a class="headerlink" href="#the-problem-with-random-splitting" title="Permanent link">&para;</a></h3>
+<p>In standard CV, you randomly split images into train/val/test. In geospatial data, neighboring tiles share visual context: same lighting angle, same shadow direction, same terrain texture, same atmospheric conditions. If tile A is in training and neighboring tile B is in validation, the model can partially memorize the scene rather than learning general features.</p>
+<p>This inflates validation metrics. Your mAP looks great, but the model fails on imagery from a different date or location.</p>
+<h3 id="block-splitting">Block Splitting<a class="headerlink" href="#block-splitting" title="Permanent link">&para;</a></h3>
+<p>detr-geo's <code>SpatialSplitter</code> assigns contiguous spatial blocks to each split, with buffer tiles discarded between blocks:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpatialSplitter</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">splitter</span> <span class="o">=</span> <span class="n">SpatialSplitter</span><span class="p">(</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">method</span><span class="o">=</span><span class="s2">&quot;block&quot;</span><span class="p">,</span>           <span class="c1"># Contiguous spatial blocks</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">ratios</span><span class="o">=</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">buffer_tiles</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>           <span class="c1"># 1-tile gap between blocks</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">)</span>
+</code></pre></div>
+<p>The buffer zone between blocks prevents spatial autocorrelation from leaking across splits. The validation set truly tests generalization.</p>
+<h3 id="when-random-is-acceptable">When Random Is Acceptable<a class="headerlink" href="#when-random-is-acceptable" title="Permanent link">&para;</a></h3>
+<p>Random splitting is available (<code>split_method="random"</code>) and appropriate when:
+- You have multiple independent scenes (different dates, different locations)
+- Each scene is its own raster, and you split at the scene level
+- You understand and accept the inflated validation metrics</p>
+<hr />
+<h2 id="step-3-train">Step 3: Train<a class="headerlink" href="#step-3-train" title="Permanent link">&para;</a></h2>
+<h3 id="basic-training">Basic Training<a class="headerlink" href="#basic-training" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">DetrGeo</span><span class="p">,</span> <span class="n">train</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">dg</span> <span class="o">=</span> <span class="n">DetrGeo</span><span class="p">(</span><span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">result</span> <span class="o">=</span> <span class="n">train</span><span class="p">(</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">adapter</span><span class="o">=</span><span class="n">dg</span><span class="o">.</span><span class="n">_adapter</span><span class="p">,</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">dataset_dir</span><span class="o">=</span><span class="s2">&quot;training_data/&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="n">batch_size</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="n">augmentation_preset</span><span class="o">=</span><span class="s2">&quot;satellite_default&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="n">augmentation_factor</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># 2x data via augmentation</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="vram-and-batch-size">VRAM and Batch Size<a class="headerlink" href="#vram-and-batch-size" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>GPU VRAM</th>
+<th>batch_size</th>
+<th>model_size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8 GB</td>
+<td>2--4</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>12 GB</td>
+<td>4--6</td>
+<td>medium</td>
+</tr>
+<tr>
+<td>24 GB</td>
+<td>8--12</td>
+<td>medium or base</td>
+</tr>
+<tr>
+<td>48 GB+</td>
+<td>16+</td>
+<td>large</td>
+</tr>
+</tbody>
+</table>
+<p>If you hit CUDA out-of-memory errors, reduce <code>batch_size</code> first. If batch_size=1 still fails, use a smaller <code>model_size</code>.</p>
+<h3 id="augmentation-presets">Augmentation Presets<a class="headerlink" href="#augmentation-presets" title="Permanent link">&para;</a></h3>
+<p>Overhead imagery has no canonical "up" direction -- a car looks the same from north or south. Standard augmentation pipelines omit vertical flip and 90-degree rotation because they break ground-level photos. For overhead imagery, these augmentations are critical.</p>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Best For</th>
+<th>Color Jitter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"satellite_default"</code></td>
+<td>Satellite (0.3--0.5m GSD)</td>
+<td>Low -- satellite imagery has consistent illumination</td>
+</tr>
+<tr>
+<td><code>"aerial_default"</code></td>
+<td>Aerial photography (0.1--0.3m GSD)</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>"drone_default"</code></td>
+<td>Drone (&lt;0.1m GSD)</td>
+<td>High -- drone lighting varies widely</td>
+</tr>
+</tbody>
+</table>
+<p>All presets enable: 90-degree rotation, horizontal flip, vertical flip, brightness/contrast/saturation jitter.</p>
+<h3 id="learning-rate">Learning Rate<a class="headerlink" href="#learning-rate" title="Permanent link">&para;</a></h3>
+<p>The RF-DETR default works well for most fine-tuning. Override only if training is unstable:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">train</span><span class="p">(</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">adapter</span><span class="o">=</span><span class="n">dg</span><span class="o">.</span><span class="n">_adapter</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">dataset_dir</span><span class="o">=</span><span class="s2">&quot;training_data/&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>  <span class="c1"># Lower for fine-tuning stability</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">)</span>
+</code></pre></div>
+<h3 id="resuming-training">Resuming Training<a class="headerlink" href="#resuming-training" title="Permanent link">&para;</a></h3>
+<p>If training is interrupted:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">train</span><span class="p">(</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">adapter</span><span class="o">=</span><span class="n">dg</span><span class="o">.</span><span class="n">_adapter</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">dataset_dir</span><span class="o">=</span><span class="s2">&quot;training_data/&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">resume</span><span class="o">=</span><span class="s2">&quot;output/checkpoint_latest.pth&quot;</span><span class="p">,</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="step-4-monitor-training">Step 4: Monitor Training<a class="headerlink" href="#step-4-monitor-training" title="Permanent link">&para;</a></h2>
+<p>Key metrics to watch during training:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What to look for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Training loss</td>
+<td>Steady decrease. Spikes = learning rate too high</td>
+</tr>
+<tr>
+<td>Validation mAP</td>
+<td>Primary metric. Should increase and plateau</td>
+</tr>
+<tr>
+<td>EMA checkpoint</td>
+<td>RF-DETR maintains exponential moving average weights. EMA typically outperforms standard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typical-training-timeline-rtx-3090-medium-model">Typical Training Timeline (RTX 3090, medium model)<a class="headerlink" href="#typical-training-timeline-rtx-3090-medium-model" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Epoch</th>
+<th>Expected mAP</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1--5</td>
+<td>0.05--0.15</td>
+<td>Adjusting from COCO to overhead</td>
+</tr>
+<tr>
+<td>5--15</td>
+<td>0.15--0.35</td>
+<td>Rapid improvement</td>
+</tr>
+<tr>
+<td>15--30</td>
+<td>0.35--0.45</td>
+<td>Diminishing returns</td>
+</tr>
+<tr>
+<td>30--50</td>
+<td>0.45--0.50</td>
+<td>Fine refinement, watch for overfitting</td>
+</tr>
+</tbody>
+</table>
+<p>Stop early if validation mAP has not improved for 10+ epochs.</p>
+<hr />
+<h2 id="step-5-deploy-fine-tuned-weights">Step 5: Deploy Fine-Tuned Weights<a class="headerlink" href="#step-5-deploy-fine-tuned-weights" title="Permanent link">&para;</a></h2>
+<p>After training, the best checkpoint is saved as <code>checkpoint_best_ema.pth</code>. Load it for inference:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">DetrGeo</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="n">dg</span> <span class="o">=</span> <span class="n">DetrGeo</span><span class="p">(</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">model_size</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">pretrain_weights</span><span class="o">=</span><span class="s2">&quot;output/checkpoint_best_ema.pth&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">custom_class_names</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;Car&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>        <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Pickup Truck&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Truck&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>        <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Bus&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Other Vehicle&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>    <span class="p">},</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="p">)</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="n">dg</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="s2">&quot;new_satellite_scene.tif&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="n">detections</span> <span class="o">=</span> <span class="n">dg</span><span class="o">.</span><span class="n">detect_tiled</span><span class="p">(</span><span class="n">overlap</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="n">dg</span><span class="o">.</span><span class="n">to_gpkg</span><span class="p">(</span><span class="s2">&quot;vehicle_detections.gpkg&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>The <code>custom_class_names</code> dict must match the class IDs used during training. Without it, detections are labeled with COCO names (e.g., "person", "bicycle") because the model outputs integer IDs that default to the COCO lookup table.</p>
+<hr />
+<h2 id="xview-training-example">xView Training Example<a class="headerlink" href="#xview-training-example" title="Permanent link">&para;</a></h2>
+<p>The <a href="http://xviewdataset.org/">xView dataset</a> provides ~1 million labeled objects across 60 classes in satellite imagery at 0.3m GSD. The detr-geo xView model was trained on 5 vehicle classes:</p>
+<table>
+<thead>
+<tr>
+<th>xView Class</th>
+<th>detr-geo Class</th>
+<th>ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Small Car, Passenger Vehicle</td>
+<td>Car</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Pickup Truck</td>
+<td>Pickup Truck</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Utility Truck, Truck</td>
+<td>Truck</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Bus</td>
+<td>Bus</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Engineering Vehicle</td>
+<td>Other Vehicle</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>Training details:
+- Model: RF-DETR Medium (576px)
+- Dataset: ~100K vehicle annotations from xView
+- Epochs: 30 (best mAP at epoch 13)
+- Batch size: 8 on RTX 3090
+- Augmentation: <code>satellite_default</code> with 2x factor
+- Training time: ~4 hours
+- Best mAP: ~0.45</p>
+<hr />
+<h2 id="active-learning-loop">Active Learning Loop<a class="headerlink" href="#active-learning-loop" title="Permanent link">&para;</a></h2>
+<p>Fine-tuning does not have to be a one-shot process. detr-geo supports an active learning workflow:</p>
+<ol>
+<li><strong>Detect</strong> on new imagery with your current model</li>
+<li><strong>Export</strong> detections to COCO format for review</li>
+<li><strong>Correct</strong> annotations in your labeling tool</li>
+<li><strong>Retrain</strong> on the expanded dataset</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detr_geo</span><span class="w"> </span><span class="kn">import</span> <span class="n">detections_to_coco</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Export detections as COCO annotations for review</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">detections_to_coco</span><span class="p">(</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="n">dg</span><span class="o">.</span><span class="n">detections</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;review/annotations.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">image_path</span><span class="o">=</span><span class="s2">&quot;scene.tif&quot;</span><span class="p">,</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">)</span>
+</code></pre></div>
+<p>Each iteration improves the model on your specific imagery domain.</p>
+<hr />
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="cuda-out-of-memory">CUDA out of memory<a class="headerlink" href="#cuda-out-of-memory" title="Permanent link">&para;</a></h3>
+<p>Reduce <code>batch_size</code>. If batch_size=1 still fails, use a smaller <code>model_size</code> ("small" or "nano").</p>
+<h3 id="training-loss-is-nan">Training loss is NaN<a class="headerlink" href="#training-loss-is-nan" title="Permanent link">&para;</a></h3>
+<p>Lower the learning rate by 10x. Check that annotations are valid (no degenerate polygons, correct CRS alignment).</p>
+<h3 id="validation-map-stays-at-0">Validation mAP stays at 0<a class="headerlink" href="#validation-map-stays-at-0" title="Permanent link">&para;</a></h3>
+<p>Ensure <code>valid/</code> contains tiles with annotations. Verify <code>class_mapping</code> matches your annotation schema.</p>
+<h3 id="model-detects-nothing-after-fine-tuning">Model detects nothing after fine-tuning<a class="headerlink" href="#model-detects-nothing-after-fine-tuning" title="Permanent link">&para;</a></h3>
+<p>Check that <code>custom_class_names</code> matches the class IDs from training. A mismatch causes detections to be labeled with wrong names and filtered out.</p>
+<h3 id="weights-file-not-found">Weights file not found<a class="headerlink" href="#weights-file-not-found" title="Permanent link">&para;</a></h3>
+<p><code>pretrain_weights</code> must point to the actual <code>.pth</code> file. Common locations:
+- <code>output/checkpoint_best_ema.pth</code> -- EMA weights (typically best)
+- <code>output/checkpoint_best.pth</code> -- standard best
+- <code>output/checkpoint_latest.pth</code> -- last epoch</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "search.suggest", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
