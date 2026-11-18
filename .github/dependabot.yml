@@ -1,0 +1,11 @@
+# Keeps the commit pins on workflow actions current. Monthly and grouped, so it opens at
+# most one pull request a month.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
